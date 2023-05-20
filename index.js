@@ -1,7 +1,11 @@
 const express = require('express');
+const bodyParser = require('body-parser');
+const cors = require('cors')
+
 const app = express();
 const port = 3000;
 app.use(express.json());
+app.use(cors())
 
 const admin = {
     email: 'admin@crms.com',
@@ -33,10 +37,12 @@ app.post('/admin/login', (req, res) => {
 app.post('/admin/users', (req, res) => {
     const { token } = req.body;
 
+    console.log(req.body)
+
     // Sanity check
     if (!token) {
         res.status(404);
-        res.send('Bad Request');
+        res.send('From admin users Bad Request');
     } else if (token !== TOKEN) {
         res.status(401);
         res.send('Unauthorized');
