@@ -8,7 +8,7 @@ const admin = {
     password: 'admin',
 };
 
-const token = 'SuperSecretToken';
+const TOKEN = 'SuperSecretToken';
 
 const users = [];
 
@@ -22,11 +22,26 @@ app.post('/admin/login', (req, res) => {
 
     if (email === admin.email && password === admin.password) {
         res.json({
-            token: token,
+            token: TOKEN,
         });
     } else {
         res.status(401);
         res.send('Unauthorized');
+    }
+});
+
+app.post('/admin/users', (req, res) => {
+    const { token } = req.body;
+
+    // Sanity check
+    if (!token) {
+        res.status(404);
+        res.send('Bad Request');
+    } else if (token !== TOKEN) {
+        res.status(401);
+        res.send('Unauthorized');
+    } else {
+        res.json({ users: users });
     }
 });
 
